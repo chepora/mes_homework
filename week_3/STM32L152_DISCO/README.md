@@ -2,7 +2,7 @@
 
 The [STM32L152 Discovery Board](https://www.st.com/en/evaluation-tools/32l152cdiscovery.html) features the STM32L152RCT6.
 
-This program is developed and compiled by using STM32CubeIE v1.11.4.
+This program was developed and compiled by using STM32CubeIE 1.13.2
 
 The board features two user LEDs besides the power LED:
     - green LED `LD3` connected to the I/O `PB7` of the STM32L152RCT6.

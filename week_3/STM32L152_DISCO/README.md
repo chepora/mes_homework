@@ -57,6 +57,7 @@ This struct shows the register for one GPIO pin bank. For the bank B for the pin
 GPIOB_BASE = AHBPERIPH_BASE + 0x0000 0400UL = PERIPH_BASE +  0x0002 0000 UL + 0x0000 0400UL = 0x4000 0000UL + 0x0002 0000UL + 0x0000 0400UL = 0x4004 0400UL
 ```
 This adress can be seen is the start of the above struct.
+It can be also found in the Memory map, 5. Memory mapping Fig.9, in the [datasheet](https://www.st.com/resource/en/datasheet/stm32l151cc.pdf)
 
 ## TLDR
 1.What are the hardware registers that cause the LED to turn on and off?

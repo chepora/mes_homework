@@ -1,5 +1,7 @@
 # Blinky on the STM32L152 Discovery Board
 
+This program lets the green LED blink and uses the user button as input, which turns on the blue LED.
+
 The [STM32L152 Discovery Board](https://www.st.com/en/evaluation-tools/32l152cdiscovery.html) features the STM32L152RCT6.
 
 This program was developed and compiled by using STM32CubeIE 1.13.2

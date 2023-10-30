@@ -3,7 +3,6 @@ add_subdirectory(lib)
 add_executable(console_poc
     main.c)
 
-set(PICO_BOARD "adafruit_feather_rp2040")
 target_link_libraries(console_poc pico_stdlib blinky console)
 
 # enable usb output, disable uart output

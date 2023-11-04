@@ -15,6 +15,7 @@
 #endif
 
 #define NOT_FOUND		-1
+#define UINT8_MAX_STR_LENGTH 5 // 255: 3 charecter plus two NULLs
 #define INT16_MAX_STR_LENGTH 8 // -65534: six characters plus a two NULLs
 #define INT32_MAX_STR_LENGTH 16
 #define NULL_CHAR            '\0'
@@ -35,6 +36,8 @@ static uint32_t ConsoleResetBuffer(char receiveBuffer[], const  uint32_t filledL
 
 static eCommandResult_T ConsoleUtilHexCharToInt(char charVal, uint8_t* pInt); // this might be replaceable with *pInt = atoi(str)
 static eCommandResult_T ConsoleUtilsIntToHexChar(uint8_t intVal, char* pChar); // this could be replaced with itoa (intVal, str, 16);
+
+static eCommandResult_T ConsoleUtilStrToInt(char * num_string, uint8_t* pInt);
 
 // ConsoleCommandMatch
 // Look to see if the data in the buffer matches the command name given that
@@ -217,6 +220,45 @@ static eCommandResult_T ConsoleParamFindN(const char * buffer, const uint8_t par
 	return result;
 }
 
+// ConsoleReceiveParamUint8
+// Identify and obtain a parameter of type uint8_t, sent in in decimal.
+// Could use ConsoleReceiveParamInt16 instead
+eCommandResult_T ConsoleReceiveParamUint8(const char * buffer, const uint8_t parameterNumber, uint8_t* paramUint8)
+{
+	uint32_t startIndex = 0;
+	uint8_t  value;
+	uint8_t i;
+	eCommandResult_T result;
+	char charVal;
+	char num_string[UINT8_MAX_STR_LENGTH];
+
+	result = ConsoleParamFindN(buffer, parameterNumber, &startIndex);
+
+	i = 0;
+	charVal = buffer[startIndex + i];
+	while ( ( LF_CHAR != charVal ) && ( CR_CHAR != charVal )
+			&& ( PARAMETER_SEPARATER != charVal )
+		&& ( i < UINT8_MAX_STR_LENGTH ))
+	{
+		num_string[i] = charVal;					// copy the relevant part
+		i++;
+		charVal = buffer[startIndex + i];
+	}
+	if ( i == UINT8_MAX_STR_LENGTH)
+	{
+		result = COMMAND_PARAMETER_ERROR;
+	}
+	if ( COMMAND_SUCCESS == result )
+	{
+		num_string[i] = NULL_CHAR;
+		result = ConsoleUtilStrToInt(num_string, paramUint8);
+
+	}
+
+	return result;
+	
+}
+
 // ConsoleReceiveParamInt16
 // Identify and obtain a parameter of type int16_t, sent in in decimal, possibly with a negative sign.
 // Note that this uses atoi, a somewhat costly function. You may want to replace it, see ConsoleReceiveParamHexUint16
@@ -377,6 +419,22 @@ static void smallItoa(int in, char* outBuffer, int radix)
 // ConsoleSendParamInt16
 // Send a parameter of type int16 using the (unsafe) C library function
 // itoa to translate from integer to string.
+eCommandResult_T ConsoleSendParamUint8(uint8_t parameterInt)
+{
+	char out[UINT8_MAX_STR_LENGTH];
+//	memset(out, 0, INT16_MAX_STR_LENGTH);
+
+	itoa (parameterInt, out, 10);
+	ConsoleIoSendString(out);
+
+	return COMMAND_SUCCESS;
+}
+
+
+
+// ConsoleSendParamInt16
+// Send a parameter of type int16 using the (unsafe) C library function
+// itoa to translate from integer to string.
 eCommandResult_T ConsoleSendParamInt16(int16_t parameterInt)
 {
 	char out[INT16_MAX_STR_LENGTH];
@@ -401,6 +459,7 @@ eCommandResult_T ConsoleSendParamInt32(int32_t parameterInt)
 
 	return COMMAND_SUCCESS;
 }
+
 // ConsoleUtilHexCharToInt
 // Converts a single hex character (0-9,A-F) to an integer (0-15)
 static eCommandResult_T ConsoleUtilHexCharToInt(char charVal, uint8_t* pInt)
@@ -410,14 +469,6 @@ static eCommandResult_T ConsoleUtilHexCharToInt(char charVal, uint8_t* pInt)
     if ( ( '0' <= charVal ) && ( charVal <= '9' ) )
     {
         *pInt = charVal - '0';
-    }
-    else if ( ( 'A' <= charVal ) && ( charVal <= 'F' ) )
-    {
-        *pInt = 10u + charVal - 'A';
-    }
-    else if( ( 'a' <= charVal ) && ( charVal <= 'f' ) )
-    {
-        *pInt = 10u + charVal - 'a';
     }
 	else if ( ( LF_CHAR != charVal ) || ( CR_CHAR != charVal )
 			|| ( PARAMETER_SEPARATER == charVal ) )
@@ -453,6 +504,29 @@ static eCommandResult_T ConsoleUtilsIntToHexChar(uint8_t intVal, char* pChar)
 
     return result;
 }
+// ConsoleUtilStrCharToInt
+// Converts a single char character to an integer (0-15)
+static eCommandResult_T ConsoleUtilStrToInt(char * num_string, uint8_t* pInt)
+{
+    eCommandResult_T result = COMMAND_SUCCESS;
+
+	uint16_t value = 0;
+  
+    for (int i = 0; num_string[i] != '\0'; i++) {
+
+        value = value * 10 + (num_string[i] - 48);
+    } 
+	if(value < 0 || value > 255){
+
+		result = COMMAND_PARAMETER_ERROR;
+
+	}else
+	{
+		*pInt = (uint8_t) value;
+	}
+    return result; 
+}
+
 // ConsoleSendString
 // Send a null terminated string to the console.
 // This is a light wrapper around ConsoleIoSendString. It uses the same

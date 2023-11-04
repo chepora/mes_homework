@@ -11,11 +11,11 @@ void led_init(LED_VAR* ptLedVar){
 
 }
 
-void led_blink(uint8_t led_pin, uint32_t blink_time_ms){
+void led_blink(LED_VAR* ptLedVar){
 
-    gpio_put(led_pin, ON);
-    sleep_ms(blink_time_ms);
-    gpio_put(led_pin, OUT);
-    sleep_ms(blink_time_ms);
+    gpio_put(ptLedVar->led_pin, ON);
+    sleep_ms(ptLedVar->blink_time_ms);
+    gpio_put(ptLedVar->led_pin, OUT);
+    sleep_ms(ptLedVar->blink_time_ms);
     
 }

@@ -8,5 +8,5 @@ set(SRC_FILES console.c
 
 add_library(console ${SRC_FILES})
 
-target_link_libraries(console pico_stdlib)
+target_link_libraries(console pico_stdlib led hardware_gpio)
 target_include_directories(console PUBLIC ./include/)

@@ -33,7 +33,9 @@ typedef enum {
 // atoi and itoa. These are nice functions, usually a lot smaller than scanf and printf
 // but they can be memory hogs in their flexibility. 
 // The HexUint16 functions implement the parsing themselves, eschewing atoi and itoa.
+eCommandResult_T ConsoleReceiveParamUint8(const char * buffer, const uint8_t parameterNumber, uint8_t* paramUint8);
 eCommandResult_T ConsoleReceiveParamInt16(const char * buffer, const uint8_t parameterNumber, int16_t* parameterInt16);
+eCommandResult_T ConsoleSendParamUint8(uint8_t parameterInt);
 eCommandResult_T ConsoleSendParamInt16(int16_t parameterInt);
 eCommandResult_T ConsoleSendParamInt32(int32_t parameterInt);
 eCommandResult_T ConsoleReceiveParamHexUint16(const char * buffer, const uint8_t parameterNumber, uint16_t* parameterUint16);

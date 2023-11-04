@@ -12,6 +12,6 @@ typedef struct LED_VAR {
 } LED_VAR;
 
 void led_init(LED_VAR* ptLedVar);
-void led_blink(uint8_t led_pin, uint32_t blink_time_ms);
+void led_blink(LED_VAR* ptLedVar);
 
 #endif

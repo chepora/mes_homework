@@ -28,7 +28,7 @@ Add a `./build` folder and run `cmake ..` from inside it.
 
 Run `./build.sh`
 
-If you are using [picotool](https://github.com/raspberrypi/picotool) you can simmple flash in two steps:
+If you are using [picotool](https://github.com/raspberrypi/picotool) you can simple flash in two steps:
 
 1. Bring the board into BOOTSEL mode by holding the similar called button while resetting
 2. Write the built `.uf2` onto the board with the following command:

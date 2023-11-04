@@ -205,9 +205,6 @@ static eCommandResult_T ConsoleCommandBlinkLED(const char buffer[]){
 	eCommandResult_T result = COMMAND_SUCCESS;
 
 	// try to find deafault led for this board
-	uint8_t LED_pin  = PICO_DEFAULT_LED_PIN;
-
-
 	LED_VAR consoleLED_var = {.led_pin = PICO_DEFAULT_LED_PIN, .blink_time_ms = 250};
 
 	led_init(&consoleLED_var);

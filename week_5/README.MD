@@ -36,3 +36,8 @@ If you are using [picotool](https://github.com/raspberrypi/picotool) you can sim
     "PATH_TO_PICOTOOL/picotool load .build/debug/src/console_poc.uf2
     ```
 
+## Implemented commands
+
+1. `gpio` get the currently configured function for a gpio pin
+2. `led` blink the boards default LED
+3. `turtle` draws an ASCII turtle
